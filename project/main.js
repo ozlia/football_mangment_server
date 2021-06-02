@@ -17,7 +17,7 @@ app.use(express.json()); // parse application/json
 app.use(
   session({
     cookieName: "session", // the cookie key name
-    secret: process.env.COOKIE_SECRET, // the encryption key && replace with env
+    secret: process.env.COOKIE_SECRET, // the encryption key
     duration: 24 * 60 * 60 * 1000, // expired after 20 sec
     activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration,
     cookie: {
@@ -45,19 +45,20 @@ const corsConfig = {
 app.use(cors(corsConfig));
 app.options("*", cors(corsConfig));
 
-const port = process.env.PORT || "3000"; // replace with env
+const port = process.env.PORT || "3000";
 
 const auth = require("./routes/auth");
-const users = require("./routes/users");
+const user = require("./routes/user");
 const league = require("./routes/league");
 const teams = require("./routes/teams");
+const search = require("./routes/search");
 
 //#endregion
 
 //#region cookie middleware
 app.use(function (req, res, next) {
   if (req.session && req.session.user_id) {
-    DButils.execQuery("SELECT user_id FROM users")
+    DButils.execQuery("SELECT * FROM users")
       .then((users) => {
         if (users.find((x) => x.user_id === req.session.user_id)) {
           req.user_id = req.session.user_id;
@@ -75,10 +76,11 @@ app.use(function (req, res, next) {
 app.get("/alive", (req, res) => res.send("I'm alive"));
 
 // Routings
-app.use("/users", users);
+app.use("/user", user);
 app.use("/league", league);
-app.use("/teams", teams);
-app.use(auth);
+app.use("/team", teams);
+app.use("/auth", auth);
+app.use(search);
 
 app.use(function (err, req, res, next) {
   console.error(err);
