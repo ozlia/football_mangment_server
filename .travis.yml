@@ -5,7 +5,7 @@ cache: npm
 script: npm run travis
 before_deploy:
   # Set up git user name and tag this commit
-  - tar -zcf ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar.gz build
+  # - tar -zcf ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar.gz build
   - git config --local user.name "ozlia"
   - git config --local user.email "ozlia@post.bgu.ac.il"
   - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
