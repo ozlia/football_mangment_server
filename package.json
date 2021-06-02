@@ -16,7 +16,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node project/main.js",
+    "travis": "node test.js"
   },
   "repository": {
     "type": "git",
