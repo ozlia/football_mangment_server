@@ -18,7 +18,8 @@
   "scripts": {
     "test": "jest",
     "start": "node project/main.js",
-    "travis": "node test.js"
+    "travis": "node test.js",
+    "naor": "echo king"
   },
   "repository": {
     "type": "git",
