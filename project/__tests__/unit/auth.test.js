@@ -1,4 +1,4 @@
-const guest_utils = require("../routes/utils/guest_utils");
+const guest_utils = require("../../routes/utils/guest_utils");
 const tested_user = {
   username: "Naor",
   firstname: "Naor",
@@ -12,8 +12,8 @@ const union_rep_role = "union_rep";
 const SQLError = "An SQL error has been thrown during insertUser testing";
 
 
-const DButils = require("../routes/utils/DButils");
-const users_utils = require("../routes/utils/users_utils");
+const DButils = require("../../routes/utils/DButils");
+const users_utils = require("../../routes/utils/users_utils");
 
 
 afterAll(async () => {
