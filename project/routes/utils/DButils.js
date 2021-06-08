@@ -16,8 +16,8 @@ const pool = new sql.ConnectionPool(config);
 const poolConnect = pool.connect();
 
 exports.execQuery = async function (query) {
-  await poolConnect;
   try {
+    await poolConnect;
     var result = await pool.request().query(query);
     return result.recordset;
   } catch (err) {
@@ -25,4 +25,6 @@ exports.execQuery = async function (query) {
     throw err;
   }
 };
+
+exports.pool = pool;
 
