@@ -6,15 +6,12 @@ const users_utils = require("../routes/utils/users_utils")
 
 router.post("/register", async (req, res, next) => {
   try {
-    // parameters exists
-    // valid parameters
-    // username exists
     const users = await DButils.execQuery(
       "SELECT * FROM users"
     );
 
     if (users.find((x) => x.username === req.body.username))
-      throw { status: 409, message: "Username taken" };
+      throw { status: 409, message: "Username is already taken" };
 
     //hash the password
     let hash_password = bcrypt.hashSync(
@@ -23,13 +20,13 @@ router.post("/register", async (req, res, next) => {
     );
     req.body.password = hash_password;
 
-    // add the new username
+    // add new user
     await DButils.execQuery(
       `INSERT INTO dbo.users (username, firstname, lastname, country, password, email, profile_picture) VALUES
        ('${req.body.username}', '${req.body.firstname}', '${req.body.lastname}', '${req.body.country}',
         '${hash_password}', '${req.body.email}', '${req.body.profile_picture}')`
     );
-    res.status(201).send("user created");
+    res.status(201).send("User has been created");
   } catch (error) {
     next(error);
   }
@@ -43,21 +40,17 @@ router.post("/login", async (req, res, next) => {
       )
     )[0];
 
-    console.log(user);
-
-    // check that username exists & the password is correct
+    // check if username exists & the password is correct
     if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
       throw { status: 401, message: "Username or Password incorrect" };
     }
 
-
     // Set cookie
     req.session.user_id = user.user_id;
         
-    const names_list = await users_utils.getUserRoles(user.user_id);
-
+    const roles_list = await users_utils.getUserRoles(user.user_id);
     // return roles
-    res.status(200).send(names_list);
+    res.status(200).send(roles_list);
   } catch (error) {
     next(error);
   }
@@ -67,7 +60,7 @@ router.post("/Logout", function (req, res) {
   if (!req.session || !req.session.user_id){
     throw { status: 412, message: "no user is logged in" };
   }
-  req.session.reset(); // reset the session info --> send cookie when  req.session == undefined!!
+  req.session.reset(); 
   res.status(200).send("logout succeeded");
 });
 
