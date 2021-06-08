@@ -1,6 +1,10 @@
 const DButils = require("../../routes/utils/DButils");
 const match_utils = require("../../routes/utils/match_utils");
 const { addMatch } = require("../../routes/utils/match_utils");
+const { extractRelevantData } = require("../../routes/utils/match_utils");
+const { prePostMatches } = require("../../routes/utils/match_utils");
+const { updateScore } = require("../../routes/utils/match_utils");
+
 var user_id;
 var user_id;
 var match_id1;
@@ -159,4 +163,40 @@ describe("testing Authenticaion", () => {
       throw "prePostMatches test failed";
     }
   });
+
+  test("prePostMatches no matches test", async () => {
+    try {
+
+      const pre_match = [];
+      const post_match = [];
+      expect(async () => {
+        await prePostMatches([pre_match, post_match]).toBe({
+          pre_played_matches: [pre_match],
+          post_played_match: [post_match],
+        });
+      });
+    } catch {
+      throw "prePostMatches  no match test failed";
+    }
+  });
+
+  test("updateScore", async() => {
+    try {
+      const new_score = "2-1"
+      match_utils.updateScore(match_id2,new_score);
+      expect(async () => {
+        await DButils.execQuery(
+          `select score from match where match_id = ${match_id2}`).toBe(new_score);
+      });
+    } catch {
+      throw "updateScore test failed";
+    }
+    finally {
+      const old_score = '2-0'
+      await DButils.execQuery(
+        `update match set score = ${old_score} where match_id = ${match_id2}`);
+    }
+  });
+
+
 });
