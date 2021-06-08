@@ -100,4 +100,4 @@ exports.addMatch = addMatch;
 exports.getCurrentFixture = getCurrentFixture;
 exports.prePostMatches = prePostMatches;
 exports.updateScore = updateScore;
-exports.addEvent = addEvent;
+// exports.addEvent = addEvent;

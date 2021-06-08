@@ -39,6 +39,4 @@ function getEventsByMatchId(match_id, events){
   }
 
 exports.addEvent = addEvent;
-exports.getMatchEvents = getMatchEvents;
-exports.getMatchById = getMatchById;
-  
+exports.getMatchEvents = getMatchEvents;  
