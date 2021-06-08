@@ -17,15 +17,15 @@ describe("testing Authenticaion", () => {
       `INSERT INTO match (home_team, away_team, league, season, stage, court, referee_name, date, score) VALUES
       ('Renders','Maccabi Haifa','271', '2020-2021','Stages level', '23', 'rafi', '12-07-2021', '2-0')`
     );
-    await DButils.execQuery(
-      `INSERT INTO users (username, firstname, lastname, country, password, email, profile_picture) VALUES
-      ('naors', 'Naor', 'Suban', 'Israel','Bb123456', 'ns@gmail.com', '/myimage/yay/jps')`
-    );
+    // await DButils.execQuery(
+    //   `INSERT INTO users (username, firstname, lastname, country, password, email, profile_picture) VALUES
+    //   ('naors', 'Naor', 'Suban', 'Israel','Bb123456', 'ns@gmail.com', '/myimage/yay/jps')`
+    // );
     
-    const user = await DButils.execQuery(
-      `SELECt user_id FROM users WHERE username = 'naors'`
-      );
-      user_id = user[0].user_id;
+    // const user = await DButils.execQuery(
+    //   `SELECt user_id FROM users WHERE username = 'naors'`
+    //   );
+    //   user_id = user[0].user_id;
       
       const match1 = await DButils.execQuery(
         `SELECt match_id FROM match WHERE home_team = 'AGF'`
@@ -44,7 +44,7 @@ describe("testing Authenticaion", () => {
     await DButils.execQuery(
       `DELETE FROM match WHERE match_id = '${match_id2}'`
     );
-    await DButils.execQuery(`DELETE FROM users WHERE user_id = '${user_id}'`);
+    // await DButils.execQuery(`DELETE FROM users WHERE user_id = '${user_id}'`);
     await DButils.pool.close();
   });
 
@@ -142,49 +142,12 @@ describe("testing Authenticaion", () => {
 
   test("prePostMatches test", async () => {
     try {
-      await addMatch({
-        home_team: "test home team",
-        away_team: "test away team",
-        league_id: 271,
-        season: "20-21",
-        stage: "round 1",
-        court: 1,
-        referee_name: "test ref",
-        date: "2021-06-08T16:00:00.000Z",
-        score: NaN,
-      });
-      await addMatch({
-        home_team: "test home team",
-        away_team: "test away team",
-        league_id: 271,
-        season: "20-21",
-        stage: "round 1",
-        court: 1,
-        referee_name: "test ref",
-        date: "2021-06-08T16:00:00.000Z",
-        score: "1:0",
-      });
+
       const pre_match = await DButils.execQuery(
-        `select * from match where
-      home_team = 'test home team' AND 
-      away_team = 'test away team' AND 
-      league = 271 AND 
-      season = '20-21' AND 
-      stage = 'round 1' AND 
-      court = 1 AND 
-      referee_name = 'test ref' AND 
-      date = '2021-06-08T16:00:00.000Z'`
+        `select * from match where match_id = ${match_id1} `
       );
       const post_match = await DButils.execQuery(
-        `select * from match where
-      home_team = 'test home team' AND 
-      away_team = 'test away team' AND 
-      league = 271 AND 
-      season = '20-21' AND 
-      stage = 'round 1' AND 
-      court = 1 AND 
-      referee_name = 'test ref' AND 
-      date = '2020-06-08T16:00:00.000Z'`
+        `select * from match where match_id = ${match_id2} `
       );
       expect(async () => {
         await prePostMatches([pre_match, post_match]).toBe({
@@ -194,29 +157,6 @@ describe("testing Authenticaion", () => {
       });
     } catch {
       throw "prePostMatches test failed";
-    } finally {
-      await DButils.execQuery(
-        `DELETE FROM match WHERE 
-          home_team = 'test home team' AND 
-          away_team = 'test away team' AND 
-          league = 271 AND 
-          season = '20-21' AND 
-          stage = 'round 1' AND 
-          court = 1 AND 
-          referee_name = 'test ref' AND 
-          date = '2021-06-08T16:00:00.000Z'`
-      );
-      await DButils.execQuery(
-        `DELETE FROM match WHERE 
-          home_team = 'test home team' AND 
-          away_team = 'test away team' AND 
-          league = 271 AND 
-          season = '20-21' AND 
-          stage = 'round 1' AND 
-          court = 1 AND 
-          referee_name = 'test ref' AND 
-          date = '2020-06-08T16:00:00.000Z'`
-      );
     }
   });
 });
