@@ -1,7 +1,7 @@
-const league = require('../routes/utils/league_utils');
-jest.mock('../routes/utils/match_utils');
-let request = require('supertest');
-let app = require('../main'); 
+// const league = require('../routes/utils/league_utils');
+// jest.mock('../routes/utils/match_utils');
+// let request = require('supertest');
+// let app = require('../main'); 
 // const DButils = require('../routes/utils/DButils');
 
 
@@ -15,9 +15,9 @@ let app = require('../main');
 // });
 
 
-test('testing supertest', async() => {
-    request(app).get('/league/ summary').expect(200)
-});
+// test('testing supertest', async() => {
+//     request(app).get('/league/ summary').expect(200)
+// });
 
 
 // test('testing assignRefereeToLeague', async () =>{
