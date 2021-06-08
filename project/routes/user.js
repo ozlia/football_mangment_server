@@ -2,8 +2,9 @@ var express = require("express");
 var router = express.Router();
 const DButils = require("./utils/DButils");
 const users_utils = require("./utils/users_utils");
-// const match_utils = require("./utils/match_utils");
-// const union_rep = require("./union_representative");
+const match_utils = require("./utils/match_utils");
+const union_rep = require("./roll_routes/union_representative");
+const referee = require("./roll_routes/referee");
 
 
 
@@ -25,7 +26,8 @@ router.use(async function (req, res, next) {
 });
 
 // Handle union representative requests
-// router.use("/union_representative", union_rep);
+router.use("/union_representative", union_rep);
+router.use("/referee", referee);
 
 
 

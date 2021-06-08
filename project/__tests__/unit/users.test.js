@@ -43,6 +43,7 @@ beforeAll(async () => {
     await DButils.execQuery(
         `DELETE FROM users WHERE user_id = '${user_id}'`
     );
+    await DButils.pool.close();
   });
 
 test('mark match as favorite successfuly for KingMessi', async () => {
