@@ -1,7 +1,8 @@
 const DButils = require("./DButils");
+
+
 async function addEvent(match_id, event){
     try{
-      await getMatchById(match_id);
       await DButils.execQuery(
         `INSERT INTO events VALUES('${match_id}','${event.date}', '${event.min_in_game}', '${event.event_type}', '${event.description}');` 
       );
@@ -39,4 +40,5 @@ function getEventsByMatchId(match_id, events){
   }
 
 exports.addEvent = addEvent;
-exports.getMatchEvents = getMatchEvents;  
+exports.getMatchEvents = getMatchEvents;
+exports.getEventsByMatchId = getEventsByMatchId;
