@@ -92,4 +92,13 @@ router.get("/matches/:league_id", async (req, res, next) => {
     }
   });
 
+  router.post("/createLeague", async (req, res, next) => {
+    try{
+      await league_utils.createLeague(req.body.league_id, req.body.league_name);
+      res.status(200).send("The league was created succesfuly");
+    }
+    catch(error){
+      next(error)
+    }
+  });
 module.exports = router;

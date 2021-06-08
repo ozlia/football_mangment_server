@@ -83,7 +83,17 @@ async function getTeamByLeague(team_name, league_id) {
     return team[0];
   }
   throw({status: 404, message: team_name + " was not found"});
-  
+}
+
+async function createLeague(league_id, league_name) {
+  try{
+    await DButils.execQuery(
+      `INSERT INTO league VALUES('${league_id}','${league_name}')`
+    );
+  }
+  catch (error){
+    throw ({status: 400, message: "somthing went horiblly wrong"})
+  }
 }
 
 
@@ -97,3 +107,4 @@ exports.getSeasonID = getSeasonID;
 exports.getSeasonName = getSeasonName;
 exports.getCurrentStage = getCurrentStage;
 exports.getTeamByLeague = getTeamByLeague;
+exports.createLeague = createLeague;
