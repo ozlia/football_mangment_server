@@ -1,5 +1,5 @@
-const DButils = require("./project/routes/utils/DButils");
-const users_utils = require("./project/routes/utils/users_utils");
+const DButils = require("../../routes/utils/DButils");
+const users_utils = require("../../routes/utils/users_utils");
 var user_id;
 var user_id;
 var match_id1;

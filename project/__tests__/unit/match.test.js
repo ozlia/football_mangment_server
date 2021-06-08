@@ -1,5 +1,5 @@
-const DButils = require("./project/routes/utils/DButils");
-const { addMatch } = require("./project/routes/utils/match_utils");
+const DButils = require("../../routes/utils/DButils");
+const { addMatch } = require("../../routes/utils/match_utils");
 
 test('two plus two is four', () => {
     console.log("tom is a bad guy");
