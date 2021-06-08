@@ -24,8 +24,6 @@ exports.execQuery = async function (query) {
     console.error("SQL error", err);
     throw err;
   }
-  finally{
-  }
 };
 
 exports.pool = pool;
