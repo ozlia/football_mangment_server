@@ -126,6 +126,26 @@ paths:
         "412":
           description: user is already referee
 
+  /user/union_representative/createLeague:
+    post:
+      tags:
+      - union_representative
+      summary: Create new league
+      description: union repesentative can add a new league to the system
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/league_parmas'
+        required: true
+      responses:
+        "200":
+          description: The league was created succesfuly
+        "403":
+          description: User isn't permitted
+        "400":
+          description: somthing went horribly wroung
+
 
   /user/referee/add_score:
     put:
@@ -625,7 +645,7 @@ components:
           description: The role list of the user
           example:
           - referee
-          - union represntative
+          - union_rep
           - player
           items:
             type: string
@@ -731,5 +751,17 @@ components:
           example: 1
         event:
           $ref: '#/components/schemas/event'
+    
+    league_parmas:
+      type: object
+      properties:
+        league_id:
+          type: integer
+          description: the leagues id
+          example: 303
+        league_name:
+          type: string
+          description: the leagues name
+          example: winner
 
     
