@@ -1,5 +1,53 @@
 const DButils = require("../../routes/utils/DButils");
+const match_utils = require("../../routes/utils/match_utils");
 const { addMatch } = require("../../routes/utils/match_utils");
+var user_id;
+var user_id;
+var match_id1;
+var match_id2;
+beforeAll(async () => {
+    jest.setTimeout(10000);
+    await DButils.execQuery(
+        `INSERT INTO match (home_team, away_team, league, season, stage, court, referee_name, date, score) VALUES
+         ('AGF','AaB','271', '2020-2021','Stages level', '21', 'ref', '12-06-2021', NULL)`
+    );
+    await DButils.execQuery(
+        `INSERT INTO match (home_team, away_team, league, season, stage, court, referee_name, date, score) VALUES
+         ('Renders','Maccabi Haifa','271', '2020-2021','Stages level', '23', 'rafi', '12-07-2021', '2-0')`
+    );
+    await DButils.execQuery(
+    `INSERT INTO users (username, firstname, lastname, country, password, email, profile_picture) VALUES
+        ('naors', 'Naor', 'Suban', 'Israel','Bb123456', 'ns@gmail.com', '/myimage/yay/jps')`
+    );
+    const user = await DButils.execQuery(
+        `SELECt user_id FROM users WHERE username = 'naors'`
+    );
+    user_id = user[0].user_id;
+    
+    const match1 = await DButils.execQuery(
+        `SELECt match_id FROM match WHERE home_team = 'AGF'`
+    );
+    match_id1 = match1[0].match_id;
+        
+    const match2 = await DButils.execQuery(
+        `SELECt match_id FROM match WHERE home_team = 'Renders'`);
+    match_id2 = match2[0].match_id;
+});
+  
+  afterAll(async () => {
+    await DButils.execQuery(
+        `DELETE FROM match WHERE match_id = '${match_id1}'`
+    );
+    await DButils.execQuery(
+        `DELETE FROM match WHERE match_id = '${match_id2}'`
+    );
+    await DButils.execQuery(
+        `DELETE FROM users WHERE user_id = '${user_id}'`
+    );
+    await DButils.pool.close();
+  });
+
+
 
 test('two plus two is four', () => {
     console.log("tom is a bad guy");
@@ -51,7 +99,7 @@ test('add match test', async () => {
 test('add match invalid league test', async () => {
   try{
     expect(async () => {
-      await addMatch({
+       await addMatch({
         home_team: 'test home team',
         away_team: 'test away team',
         league_id: 270,
@@ -61,11 +109,11 @@ test('add match invalid league test', async () => {
         referee_name: 'test ref',
         date: "2021-06-08T16:00:00.000Z",
         score: NaN});
-    }).toThrow();
+    });
   }
-    catch(error){
-      throw("add match invalid league test failed");
-    }
+  catch(error){
+    throw(error);
+  }
     finally{
       await DButils.execQuery(
           `DELETE FROM match WHERE 
@@ -86,6 +134,16 @@ test('extractRelevantData empty match_list test', async () => {
     expect(async () => {
       await extractRelevantData([]).toBe([]);
     });
+});
+
+test('get exists match id  test', async () => {
+  try{
+      const returnMatch = await match_utils.getMatchById(match_id1);
+      expect (returnMatch.length).toBe(1);
+    }    
+    catch(error){
+      throw('match_id invalid');
+    }
 });
 
 test('prePostMatches test', async () => {

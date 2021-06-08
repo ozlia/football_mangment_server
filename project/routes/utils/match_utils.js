@@ -100,4 +100,5 @@ exports.addMatch = addMatch;
 exports.getCurrentFixture = getCurrentFixture;
 exports.prePostMatches = prePostMatches;
 exports.updateScore = updateScore;
+exports.getMatchById = getMatchById;
 // exports.addEvent = addEvent;
