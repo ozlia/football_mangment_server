@@ -127,10 +127,10 @@ paths:
           description: user is already referee
 
 
-  /user/union_representative/add_score:
+  /user/referee/add_score:
     put:
       tags:
-      - union_representative
+      - referee
       summary: add score to an existing match
       description: union repesentative can add score to a match 
       requestBody:
@@ -147,10 +147,10 @@ paths:
         "404":
           description: match_id was not found
 
-  /user/union_representative/add_event:
+  /user/referee/add_event:
     put:
       tags:
-      - union_representative
+      - referee
       summary: add event to an existing match
       description: union repesentative can add event to a match's log event 
       requestBody:

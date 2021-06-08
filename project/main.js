@@ -3,16 +3,19 @@ const DButils = require("./routes/utils/DButils");
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
-//#endregion
-//#region express configures
 var express = require("express");
 var path = require("path");
+const fileSystem = require('fs');
 const session = require("client-sessions");
 var logger = require("morgan");
 var cors = require("cors");
 
+let accessLogStream = fileSystem.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
+
 var app = express();
 app.use(logger("dev")); //logger
+app.use(logger(':method :status :url "HTTP/:http-version" :response-time ms', {stream: accessLogStream}));
+
 app.use(express.json()); // parse application/json
 app.use(
   session({

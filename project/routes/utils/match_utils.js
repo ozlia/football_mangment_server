@@ -63,6 +63,10 @@ async function updateScore(match_id, score){
   }
 }
 
+async function addEvent(match_id, event) {
+  await eventlog_utils.addEvent(match_id, event);
+}
+
 async function getMatchById(match_id){
   let match = await DButils.execQuery(
     `SELECT * FROM match WHERE match_id = '${match_id}'`
@@ -101,4 +105,4 @@ exports.getCurrentFixture = getCurrentFixture;
 exports.prePostMatches = prePostMatches;
 exports.updateScore = updateScore;
 exports.getMatchById = getMatchById;
-// exports.addEvent = addEvent;
+exports.addEvent = addEvent;

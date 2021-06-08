@@ -48,10 +48,10 @@ async function checkMatchCreationConstraints(home_team_name, away_team_name, ref
 
 async function addMatch(match) {
     await match_utils.addMatch({
-        home_team: match.home_team_name,
-        away_team: match.away_team_name,
+        home_team: match.home_team,
+        away_team: match.away_team,
         league_id: match.league_id,
-        season: match.season_name,
+        season: match.season,
         stage: match.stage,
         court: match.court,
         referee_name: match.referee_name,
