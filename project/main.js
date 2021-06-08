@@ -47,12 +47,11 @@ app.options("*", cors(corsConfig));
 
 const port = process.env.PORT || "3000";
 
-const auth = require("./routes/auth");
+const guest = require("./routes/guest");
+
 // const user = require("./routes/user");
 // const league = require("./routes/league");
 // const teams = require("./routes/teams");
-// const search = require("./routes/search");
-
 //#endregion
 
 //#region cookie middleware
@@ -79,8 +78,7 @@ app.get("/alive", (req, res) => res.send("I'm alive"));
 // app.use("/user", user);
 // app.use("/league", league);
 // app.use("/team", teams);
-app.use("/auth", auth);
-// app.use(search);
+app.use(guest);
 
 app.use(function (err, req, res, next) {
   console.error(err);
