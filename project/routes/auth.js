@@ -39,13 +39,6 @@ router.post("/login", async (req, res, next) => {
     next(error);
   }
 });
-// check
-router.post("logout", function (req, res) {
-  if (!req.session || !req.session.user_id){
-    throw { status: 412, message: "no user is logged in" };
-  }
-  req.session.reset(); 
-  res.status(200).send("logout succeeded");
-});
+
 
 module.exports = router;

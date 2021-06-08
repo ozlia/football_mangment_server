@@ -49,7 +49,7 @@ const port = process.env.PORT || "3000";
 
 const guest = require("./routes/guest");
 
-// const user = require("./routes/user");
+const user = require("./routes/user");
 // const league = require("./routes/league");
 // const teams = require("./routes/teams");
 //#endregion
@@ -75,7 +75,7 @@ app.use(function (req, res, next) {
 app.get("/alive", (req, res) => res.send("I'm alive"));
 
 // Routings
-// app.use("/user", user);
+app.use("/user", user);
 // app.use("/league", league);
 // app.use("/team", teams);
 app.use(guest);

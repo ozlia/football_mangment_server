@@ -68,19 +68,11 @@ async function getUserIdByUsername(username) {
   return user_id[0].user_id;
 }
 
-async function getRefLeague(id) {
-  const league_id = await DButils.execQuery(
-    `select league_id from league_referees where user_id='${id}'`
-  );
-  return league_id;
-}
-
-
 async function isRole(user_id, role_name) {
   let user_roles = []
   user_roles = await users_utils.getUserRoles(user_id);
-  const is_referee = user_roles.find(element => element ==role_name);
-  return is_referee;
+  const is_role = user_roles.find(element => element == role_name);
+  return is_role;
 }
 
 exports.markMatchAsFavorite = markMatchAsFavorite;
@@ -89,4 +81,3 @@ exports.getUserRoles = getUserRoles;
 exports.assignRole = assignRole;
 exports.getUserIdByUsername = getUserIdByUsername;
 exports.isRole = isRole;
-exports.getRefLeague = getRefLeague;
