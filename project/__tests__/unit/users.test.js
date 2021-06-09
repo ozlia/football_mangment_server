@@ -52,7 +52,7 @@ describe("testing Authenticaion", () => {
         await DButils.pool.close();
     });
     
-    beforeEach( () => {
+    beforeEach(async () => {
         jest.setTimeout(10000);
     });
     // test.skip('mark match as favorite successfuly for KingMessi', async () => {
