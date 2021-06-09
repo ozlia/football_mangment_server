@@ -48,7 +48,7 @@ describe("testing Authenticaion", () => {
         await DButils.pool.close();
       });
     
-    test('mark match as favorite successfuly for KingMessi', async () => {
+    test.skip('mark match as favorite successfuly for KingMessi', async () => {
         try{
             await users_utils.markMatchAsFavorite(user_id, match_id1);
             await users_utils.markMatchAsFavorite(user_id, match_id2);
