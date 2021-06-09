@@ -2,3 +2,4 @@
 .vscode
 node_modules
 access.log
+sql_scripts
