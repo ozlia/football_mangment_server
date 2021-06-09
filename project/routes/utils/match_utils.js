@@ -1,6 +1,6 @@
 const DButils = require("./DButils");
 const eventlog_utils = require("./eventlog_utils");
-// const league_utils = require("./league_utils");
+const league_utils = require("./league_utils");
 
 async function addMatch(match){
     await DButils.execQuery(

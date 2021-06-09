@@ -4,9 +4,8 @@ const { addMatch } = require("../../routes/utils/match_utils");
 const { extractRelevantData } = require("../../routes/utils/match_utils");
 const { prePostMatches } = require("../../routes/utils/match_utils");
 const { updateScore } = require("../../routes/utils/match_utils");
+const league_utils = require("../../routes/utils/league_utils");
 
-var user_id;
-var user_id;
 var match_id1;
 var match_id2;
 
@@ -197,6 +196,14 @@ describe("testing Authenticaion", () => {
         `update match set score = ${old_score} where match_id = ${match_id2}`);
     }
   });
+
+  test("getCurrentFixture", async() => {
+    jest.spyOn(league_utils, 'getCurrentStage').mockImplementation(() =>  Promise.resolve('Stages level'));
+    const currentMatch = await match_utils.getCurrentFixture('271');
+    expect(currentMatch.length).toBeGreaterThan(0);
+  });
+
+
 
 
 });
