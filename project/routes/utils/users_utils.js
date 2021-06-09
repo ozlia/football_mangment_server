@@ -58,6 +58,7 @@ async function assignRole(user_id, role_name) {
   );
 }
 
+
 async function getUserIdByUsername(username) {
   const user_id = await DButils.execQuery(
     `select user_id from users where username='${username}'`

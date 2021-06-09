@@ -22,7 +22,7 @@ describe("testing Authenticaion", () => {
         );
         
         const user = await DButils.execQuery(
-            `SELECt user_id FROM users WHERE username = 'testU'`
+            `SELECt user_id,username FROM users WHERE username = 'testU'`
         );
         user_id = user[0].user_id;
         username = user[0].username;
@@ -112,13 +112,8 @@ describe("testing Authenticaion", () => {
 
     
     test ('getUserIdByUsername test', async () => {
-        try{
-            expect (async () => 
-                await users_utils.getUserIdByUsername(username)).toBe(user_id);
-        }
-        catch{
-            throw("getUserIdByUsername test failed");
-        }
+            const return_user_id = await users_utils.getUserIdByUsername(username);
+            expect(return_user_id).toBe(user_id);
     });
     
 });
