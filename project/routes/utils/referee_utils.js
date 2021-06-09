@@ -8,7 +8,7 @@ async function getRefLeague(ref_name) {
       throw({status: 404, message: "referee not found"});    
   }
   const league_id = await DButils.execQuery(
-    `select league_id from league_referees where user_id='${ref_id}'`
+    `SELECT league_id from league_referees where user_id='${ref_id}'`
   );
   return league_id;
   }

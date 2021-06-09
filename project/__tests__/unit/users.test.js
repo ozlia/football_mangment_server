@@ -52,6 +52,9 @@ describe("testing Authenticaion", () => {
         await DButils.pool.close();
     });
     
+    beforeEach( () => {
+        jest.setTimeout(10000);
+    });
     // test.skip('mark match as favorite successfuly for KingMessi', async () => {
     //     try{
     //         await users_utils.markMatchAsFavorite(user_id, match_id1);
