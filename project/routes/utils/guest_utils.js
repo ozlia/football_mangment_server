@@ -18,7 +18,7 @@ async function verifyUsernameUnique(username){
         "SELECT * FROM users"
       );
   
-      if (users.find((x) => x.username === username))
+      if (users && users.find((x) => x.username === username))
         throw { status: 409, message: "Username is already taken" };
 }
 
