@@ -1,6 +1,7 @@
 const DButils = require("../../routes/utils/DButils");
 const users_utils = require("../../routes/utils/users_utils");
 var user_id;
+var username;
 var match_id1;
 var match_id2;
 
@@ -24,7 +25,7 @@ describe("testing Authenticaion", () => {
             `SELECt user_id FROM users WHERE username = 'testU'`
         );
         user_id = user[0].user_id;
-        
+        username = user[0].username;
         const match1 = await DButils.execQuery(
             `SELECt match_id FROM match WHERE home_team = 'testH1'`
         );
@@ -103,6 +104,17 @@ describe("testing Authenticaion", () => {
         finally{
             await DButils.execQuery(
                 `DELETE FROM favorite_matches WHERE user_id = '${user_id}'`);
+        }
+    });
+
+    
+    test ('getUserIdByUsername test', async () => {
+        try{
+            expect (async () => 
+                await users_utils.getUserIdByUsername(username)).toBe(user_id);
+        }
+        catch{
+            throw("getUserIdByUsername test failed");
         }
     });
     
