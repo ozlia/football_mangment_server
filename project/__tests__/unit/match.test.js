@@ -234,11 +234,5 @@ describe("testing Authenticaion", () => {
     throw "prePostMatches  int with stub test failed";
    }
   });
+});
 
-  test.only ("getLeagueDetails no stubs", async() => {
-    const league_details = await league_utils.getLeagueDetails() 
-    expect(league_details.match).toBeDefined();
-    expect(league_details.stage_name).toBeDefined();
-
-    });
-  });
