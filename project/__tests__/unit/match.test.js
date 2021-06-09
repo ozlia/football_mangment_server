@@ -20,15 +20,6 @@ describe("testing Authenticaion", () => {
       `INSERT INTO match (home_team, away_team, league, season, stage, court, referee_name, date, score) VALUES
       ('Renders','Maccabi Haifa','271', '2020-2021','Stages level', '23', 'rafi', '12-07-2021', '2-0')`
     );
-    // await DButils.execQuery(
-    //   `INSERT INTO users (username, firstname, lastname, country, password, email, profile_picture) VALUES
-    //   ('naors', 'Naor', 'Suban', 'Israel','Bb123456', 'ns@gmail.com', '/myimage/yay/jps')`
-    // );
-    
-    // const user = await DButils.execQuery(
-    //   `SELECt user_id FROM users WHERE username = 'naors'`
-    //   );
-    //   user_id = user[0].user_id;
       
       const match1 = await DButils.execQuery(
         `SELECt match_id FROM match WHERE home_team = 'AGF'`
@@ -47,13 +38,9 @@ describe("testing Authenticaion", () => {
     await DButils.execQuery(
       `DELETE FROM match WHERE match_id = '${match_id2}'`
     );
-    // await DButils.execQuery(`DELETE FROM users WHERE user_id = '${user_id}'`);
     await DButils.pool.close();
   });
 
-  test("two plus two is four", () => {
-    console.log("tom is a bad guy");
-  });
   test("add match test", async () => {
     try {
       await addMatch({
