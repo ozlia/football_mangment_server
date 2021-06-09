@@ -45,7 +45,6 @@ describe("testing teams utils", () => {
 
     test('testing teamSeasonMatches', async () => {
     const matchesFound = await team_utils.teamSeasonMatches(tested_match.home_team,tested_match.season);
-    console.log(tested_match.match_id);
     expect(matchesFound.length).toBe(1);
     expect(matchesFound[0].season).toEqual(tested_match.season);
     });
