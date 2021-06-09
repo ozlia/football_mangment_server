@@ -66,5 +66,15 @@ describe("testing Authenticaion", () => {
                 );
             }
       });
+      test('get roles test', async () => {
+        try{
+            expect(async () => {
+                await users_utils.getUserRoles(user_id).toBe(['referee']);
+              }); 
+        }
+        catch{  
+            throw("get roles test failed");
+        }
+    });  
     
 });
