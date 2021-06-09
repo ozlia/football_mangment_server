@@ -8,6 +8,8 @@ const league_utils = require("../../routes/utils/league_utils");
 
 var match_id1;
 var match_id2;
+var match1;
+var match2;
 
 describe("testing Authenticaion", () => {
   beforeAll(async () => {
@@ -21,12 +23,12 @@ describe("testing Authenticaion", () => {
       ('Renders','Maccabi Haifa','271', '2020-2021','Stages level', '23', 'rafi', '12-07-2021', '2-0')`
     );
       
-      const match1 = await DButils.execQuery(
+       match1 = await DButils.execQuery(
         `SELECt match_id FROM match WHERE home_team = 'AGF'`
         );
         match_id1 = match1[0].match_id;
         
-        const match2 = await DButils.execQuery(
+        match2 = await DButils.execQuery(
           `SELECt match_id FROM match WHERE home_team = 'Renders'`
           );
           match_id2 = match2[0].match_id;
@@ -166,7 +168,7 @@ describe("testing Authenticaion", () => {
     }
   });
 
-  test("updateScore", async() => {
+  test("updateScore no stub", async() => {
     try {
       const new_score = "2-1"
       match_utils.updateScore(match_id2,new_score);
@@ -175,7 +177,7 @@ describe("testing Authenticaion", () => {
           `select score from match where match_id = ${match_id2}`).toBe(new_score);
       });
     } catch {
-      throw "updateScore test failed";
+      throw "updateScore  no stub test failed";
     }
     finally {
       const old_score = '2-0'
@@ -190,7 +192,45 @@ describe("testing Authenticaion", () => {
     expect(currentMatch.length).toBeGreaterThan(0);
   });
 
+  test ("updatescore int with stub", async() => {
+    try{
+      const new_score = "2-1";
+    const mock = jest.spyOn(match_utils,'getMatchById');
+    mock.mockReturnValue(Promise.resolve(match2));
+    match_utils.updateScore(match_id2,new_score);
+    expect(mock).toHaveBeenCalled();
 
+
+    const score = await DButils.execQuery(
+      `select score from match where match_id = ${match_id2}`);
+    expect(score[0].score).toBe(new_score);
+  }  
+  catch {
+    throw "updateScore  int with stub test failed";
+  }
+  finally {
+    const old_score = '2-0';
+    await DButils.execQuery(
+      `update match set score = ${old_score} where match_id = ${match_id2}`);
+  }
+
+  });
+  test ("prePostMatches int with stub", async() => {
+    try{
+    const mock = jest.spyOn(match_utils, 'extractRelevantData');
+    mock.mockReturnValue(Promise.resolve([{"score": null},{"score": "1-0"}]));
+    const results = await match_utils.prePostMatches([{match_id:match_id1},{match_id:match_id2}]);
+  expect(mock).toHaveBeenCalled();
+
+    expect(results).toEqual( { pre_played_matches:[{"score": null}], post_played_match: [{"score": "1-0"}] });
+  } 
+  catch {
+    throw "prePostMatches  int with stub test failed";
+  }
+
+
+  });
 
 
 });
+

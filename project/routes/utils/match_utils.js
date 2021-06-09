@@ -51,7 +51,7 @@ async function getCurrentFixture(league_id){
 
 async function updateScore(match_id, score){
   try{
-    await getMatchById(match_id);
+    await exports.getMatchById(match_id);
     await DButils.execQuery(
       `UPDATE match 
       SET score = '${score}'
@@ -82,7 +82,7 @@ INPUT: all matches details
 OUTPUT: json file with two lists: pre played matches and post played matches
 */
 async function prePostMatches(all_matches){
-  let matches = await extractRelevantData(all_matches);
+  let matches = await exports.extractRelevantData(all_matches);
   let post_played = [];
   let pre_played = [];
 
