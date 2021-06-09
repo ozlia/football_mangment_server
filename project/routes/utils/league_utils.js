@@ -2,6 +2,7 @@ const axios = require("axios");
 const DButils = require("./DButils");
 const match_utils = require("./match_utils");
 const team_utils = require("./team_utils");
+const policyFectory = require("../../algorithms/policyFactory");
 const LEAGUE_ID = 271;
 const LEAGUE_NAME = "SUPER LEAGUE";
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
@@ -17,6 +18,7 @@ const CURRENT_STAGES = [
   'Regular Season'
 ];
 const SEASON_ID = 18334;
+let schedulingPolilcy;
 
 async function getSeasonID(){
   return SEASON_ID;
@@ -96,6 +98,30 @@ async function createLeague(league_id, league_name) {
   }
 }
 
+async function getLeagueRefs(league_id) {
+  try{
+    let ref_names = await DButils.execQuery(
+      `SELECT username FROM users join league_referees on users.user_id = league_referees.user_id where league_id = '${league_id}'`
+    );
+    return ref_names;
+  }
+  catch (error){
+    throw ({status: 400, message: "somthing went horiblly wrong"})
+  }
+}
+
+async function getTeamsBySeasonID(season_id) {
+  team_utils.getTeamsBySeasonId(season_id);
+}
+
+
+function setPolicy(policy_name) {
+  schedulingPolilcy = policyFectory.getPolicy(policy_name);
+}
+
+function runSchedulingPolicy(policy_name) {
+  schedulingPolilcy();
+}
 
 exports.getLeagueDetails = getLeagueDetails;
 exports.getLeagueId= getLeagueId;
@@ -108,3 +134,8 @@ exports.getSeasonName = getSeasonName;
 exports.getCurrentStage = getCurrentStage;
 exports.getTeamByLeague = getTeamByLeague;
 exports.createLeague = createLeague;
+exports.setPolicy = setPolicy;
+exports.runSchedulingPolicy = runSchedulingPolicy;
+exports.getLeagueRefs = getLeagueRefs;
+exports.getTeamsBySeasonID = getTeamsBySeasonID;
+
