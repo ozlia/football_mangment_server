@@ -1,7 +1,21 @@
+const team_utils = require("../../routes/utils/team_utils");
+const team_name = "AGF";
+const league_id= 271;
 const tested_ref = {
   referee_id: 40, //also a referee
-  league_id: 271,
+  league_id: league_id
 };
+
+const teams = [{
+  id: 293,
+  team_logo: "logo.jpg",
+  team_name: team_name
+},
+{
+  id: 3422,
+  team_logo: "logo1.jpg",
+  team_name: team_name
+}]
 const tested_match = {
   home_team: "league_test_home_team",
   away_team: "league_test_away_team",
@@ -49,4 +63,16 @@ describe("testing league_utils", () => {
     const leagues = await league_utils.getleaguesOfTeam("");
     expect(leagues[0]).toBe(tested_ref.league_id);
   });
+
+  test("testing getTeamByLeague", async () => {
+    jest.spyOn(team_utils, 'getTeamsByName').mockImplementation(() =>  Promise.resolve(teams));
+    const team_return = await league_utils.getTeamByLeague(
+      team_name,
+      league_id
+      );
+      expect(team_return).toEqual(teams[0]);
+  });
 });
+
+
+
