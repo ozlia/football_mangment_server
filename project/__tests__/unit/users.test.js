@@ -20,6 +20,7 @@ describe("testing Authenticaion", () => {
         `INSERT INTO users (username, firstname, lastname, country, password, email, profile_picture) VALUES
             ('testU', 'testF', 'testL', 'testC','testP', 'testE', 'testPR')`
         );
+        
         const user = await DButils.execQuery(
             `SELECt user_id FROM users WHERE username = 'testU'`
         );
@@ -33,10 +34,13 @@ describe("testing Authenticaion", () => {
         const match2 = await DButils.execQuery(
             `SELECt match_id FROM match WHERE home_team = 'testH2'`);
         match_id2 = match2[0].match_id;
+
+        await DButils.execQuery( `INSERT INTO roles (user_id, role_name) values
+        (${user_id},'referee')`);
     });
       
       afterAll(async () => {
-        await DButils.execQuery(
+        await DButils.execQuery( `DELETE FROM roles where user_id = ${user_id}`);        await DButils.execQuery(
             `DELETE FROM match WHERE match_id = '${match_id1}'`
         );
         await DButils.execQuery(
@@ -48,7 +52,7 @@ describe("testing Authenticaion", () => {
         await DButils.pool.close();
       });
     
-    test('mark match as favorite successfuly for KingMessi', async () => {
+    test.skip('mark match as favorite successfuly for KingMessi', async () => {
         try{
             await users_utils.markMatchAsFavorite(user_id, match_id1);
             await users_utils.markMatchAsFavorite(user_id, match_id2);
@@ -66,15 +70,39 @@ describe("testing Authenticaion", () => {
                 );
             }
       });
-      test('get roles test', async () => {
+    test('get roles test', async () => {
         try{
             expect(async () => {
                 await users_utils.getUserRoles(user_id).toBe(['referee']);
-              }); 
+                }); 
         }
         catch{  
             throw("get roles test failed");
         }
-    });  
+    }); 
+    test ('assignRole test', async () => {
+        try{
+            expect (async () => 
+                await users_utils.assignRole(user_id,'union_rep')).not.toThrow();
+        }
+        catch{
+            throw("assignRole test failed");
+        }
+    })
+    test('getFavoriteMatches test', async () => {
+        try{
+            await DButils.execQuery(
+            `insert into favorite_matches values ('${user_id}',${match_id1})`
+            );
+            expect ((await users_utils.getFavoriteMatches(user_id)).length).toBe(1);
+        }
+        catch{
+            throw("getFavoriteMatches test failed");
+        }
+        finally{
+            await DButils.execQuery(
+                `DELETE FROM favorite_matches WHERE user_id = '${user_id}'`);
+        }
+    });
     
 });
