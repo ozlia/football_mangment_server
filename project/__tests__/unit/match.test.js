@@ -4,9 +4,8 @@ const { addMatch } = require("../../routes/utils/match_utils");
 const { extractRelevantData } = require("../../routes/utils/match_utils");
 const { prePostMatches } = require("../../routes/utils/match_utils");
 const { updateScore } = require("../../routes/utils/match_utils");
+const league_utils = require("../../routes/utils/league_utils");
 
-var user_id;
-var user_id;
 var match_id1;
 var match_id2;
 
@@ -21,15 +20,6 @@ describe("testing Authenticaion", () => {
       `INSERT INTO match (home_team, away_team, league, season, stage, court, referee_name, date, score) VALUES
       ('Renders','Maccabi Haifa','271', '2020-2021','Stages level', '23', 'rafi', '12-07-2021', '2-0')`
     );
-    // await DButils.execQuery(
-    //   `INSERT INTO users (username, firstname, lastname, country, password, email, profile_picture) VALUES
-    //   ('naors', 'Naor', 'Suban', 'Israel','Bb123456', 'ns@gmail.com', '/myimage/yay/jps')`
-    // );
-    
-    // const user = await DButils.execQuery(
-    //   `SELECt user_id FROM users WHERE username = 'naors'`
-    //   );
-    //   user_id = user[0].user_id;
       
       const match1 = await DButils.execQuery(
         `SELECt match_id FROM match WHERE home_team = 'AGF'`
@@ -48,13 +38,9 @@ describe("testing Authenticaion", () => {
     await DButils.execQuery(
       `DELETE FROM match WHERE match_id = '${match_id2}'`
     );
-    // await DButils.execQuery(`DELETE FROM users WHERE user_id = '${user_id}'`);
     await DButils.pool.close();
   });
 
-  test("two plus two is four", () => {
-    console.log("tom is a bad guy");
-  });
   test("add match test", async () => {
     try {
       await addMatch({
@@ -197,6 +183,14 @@ describe("testing Authenticaion", () => {
         `update match set score = ${old_score} where match_id = ${match_id2}`);
     }
   });
+
+  test("getCurrentFixture", async() => {
+    jest.spyOn(league_utils, 'getCurrentStage').mockImplementation(() =>  Promise.resolve('Stages level'));
+    const currentMatch = await match_utils.getCurrentFixture('271');
+    expect(currentMatch.length).toBeGreaterThan(0);
+  });
+
+
 
 
 });
