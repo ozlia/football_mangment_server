@@ -72,7 +72,14 @@ describe("testing league_utils", () => {
       );
       expect(team_return).toEqual(teams[0]);
   });
-});
+
+  test ("getLeagueDetails no stubs", async() => {
+    const league_details = await league_utils.getLeagueDetails() 
+    expect(league_details.match).toBeDefined();
+    expect(league_details.stage_name).toBeDefined();
+
+    });
+  });
 
 
 

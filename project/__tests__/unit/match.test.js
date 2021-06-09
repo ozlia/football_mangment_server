@@ -186,8 +186,14 @@ describe("testing Authenticaion", () => {
     }
   });
 
-  test("getCurrentFixture", async() => {
+  test("getCurrentFixture with stub", async() => {
     jest.spyOn(league_utils, 'getCurrentStage').mockImplementation(() =>  Promise.resolve('Stages level'));
+    const currentMatch = await match_utils.getCurrentFixture('271');
+    expect(currentMatch.length).toBeGreaterThan(0);
+  });
+
+  test("getCurrentFixture without stub", async() => {
+    jest.clearAllMocks();
     const currentMatch = await match_utils.getCurrentFixture('271');
     expect(currentMatch.length).toBeGreaterThan(0);
   });
@@ -226,11 +232,13 @@ describe("testing Authenticaion", () => {
   } 
   catch {
     throw "prePostMatches  int with stub test failed";
-  }
-
-
+   }
   });
 
+  test.only ("getLeagueDetails no stubs", async() => {
+    const league_details = await league_utils.getLeagueDetails() 
+    expect(league_details.match).toBeDefined();
+    expect(league_details.stage_name).toBeDefined();
 
-});
-
+    });
+  });
