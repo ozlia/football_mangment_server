@@ -7,7 +7,7 @@ const guest_utils = require("../routes/utils/guest_utils");
 
 router.post("/register", async (req, res, next) => {
   try {
-    guest_utils.verifyUsernameUnique(req.body.username);
+    await guest_utils.verifyUsernameUnique(req.body.username);
 
     //hash the password
     let hash_password = bcrypt.hashSync(
