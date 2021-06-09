@@ -21,7 +21,7 @@
   "scripts": {
     "test": "jest",
     "start": "node project/main.js",
-    "travis": "node test.js",
+    "travis": "jest",
     "naor": "echo king"
   },
   "repository": {
