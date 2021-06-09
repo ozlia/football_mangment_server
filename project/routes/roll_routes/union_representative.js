@@ -101,4 +101,24 @@ router.get("/matches/:league_id", async (req, res, next) => {
       next(error)
     }
   });
+
+  router.put("/assign_policy", async (req, res, next) => {
+    try{
+      league_utils.setPolicy(req.body.league_id, req.body.policy);
+      res.status(200).send("The policy was assigned successfuly");
+    }
+    catch(error){
+      next(error)
+    }
+  });
+
+  router.post("/run_scheduling_policy", async (req, res, next) => {
+    try{
+      await league_utils.runSchedulingPolicy(req.body.league_id);
+      res.status(200).send("The matches have beem created successfuly");
+    }
+    catch(error){
+      next(error)
+    }
+  });
 module.exports = router;

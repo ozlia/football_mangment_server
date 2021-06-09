@@ -111,16 +111,45 @@ async function getLeagueRefs(league_id) {
 }
 
 async function getTeamsBySeasonID(season_id) {
-  team_utils.getTeamsBySeasonId(season_id);
+  return await team_utils.getTeamsBySeasonId(season_id);
 }
 
 
-function setPolicy(policy_name) {
-  schedulingPolilcy = policyFectory.getPolicy(policy_name);
+async function setPolicy(league_id ,policy_name) {
+  try{
+    schedulingPolilcy = policyFectory.getPolicy(policy_name);
+    await DButils.execQuery(
+      `INSERT INTO scheduling_policy VALUES('${league_id}','${policy_name}')`
+    );
+  }
+  catch (error){
+    throw ({status: 400, message: "somthing went horiblly wrong"})
+  }
 }
 
-function runSchedulingPolicy(policy_name) {
-  schedulingPolilcy();
+async function runSchedulingPolicy(league_id) {
+  try{
+    if (schedulingPolilcy == undefined){
+      schedulingPolilcy = await getPolicy(league_id);
+      if (schedulingPolilcy == null)
+        throw({ status: 404, message: "no scheduling policy was set"});
+    }
+    await schedulingPolilcy(league_id, CURRENT_SEASON);
+  }
+  catch(error){
+    throw(error);
+  }
+}
+
+async function getPolicy(league_id) {
+  let policy_name = await DButils.execQuery(
+    `SELECT policy_name from scheduling_policy where league_id = '${league_id}'`
+  );
+  if (policy_name.length == 0){
+    return null;
+  }
+  return policyFectory.getPolicy(policy_name[0].policy_name);
+  
 }
 
 exports.getLeagueDetails = getLeagueDetails;

@@ -126,6 +126,50 @@ paths:
         "412":
           description: user is already referee
 
+  /user/union_representative/assign_policy:
+    put:
+      tags:
+      - union_representative
+      summary: assign scheduling policy for league
+      description: union repesentative can assign a new scheduling policy for league in a new season to come
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/policy'
+        required: true
+      responses:
+        "200":
+          description: The policy was assigned successfuly
+        "403":
+          description: User isn't permitted
+        "404":
+          description: league was not found
+
+  /user/union_representative/run_scheduling_policy:
+    post:
+      tags:
+      - union_representative
+      summary: creates matches for the entire season
+      description: union repesentative can run the scheduling policy for league in a new season to come
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/league_id'
+        required: true
+      responses:
+        "200":
+          description: The matches have beem created successfuly
+        "403":
+          description: User isn't permitted
+        "404":
+          description: league was not found
+        "412":
+          description: not enougth referees
+        "400":
+          description: somthing went horribly wrong
+
   /user/union_representative/createLeague:
     post:
       tags:
@@ -201,6 +245,7 @@ paths:
                 $ref: '#/components/schemas/league_params'
         "400":
           description: didnt find available data on league
+
   /user/union_representative/assign_referee_league:
     put:
       tags:
@@ -222,6 +267,7 @@ paths:
           description: The referee's username was not found
         "412":
           description: To assign referee to a league, The user should be already a referee
+
   /player/page/{player_id}:
     get:
       tags:
@@ -758,10 +804,28 @@ components:
         league_id:
           type: integer
           description: the leagues id
-          example: 303
+          example: 271
         league_name:
           type: string
           description: the leagues name
           example: winner
 
-    
+    policy:
+      type: object
+      properties:
+        league_id:
+          type: integer
+          description: the leagues id
+          example: 271
+        policy:
+          type: string
+          description: how to schedule the league games
+          example: reagular Season
+
+    league_id:
+      type: object
+      properties:
+        league_id:
+          type: integer
+          description: the leagues id
+          example: 271

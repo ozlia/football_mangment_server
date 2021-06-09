@@ -1,152 +1,341 @@
-const league_utils = require("../../routes/utils/league_utils");
+const DButils = require("../../routes/utils/DButils");
 const regularLeaguePolicy = require("../../algorithms/regularLeaguePolicy");
+jest.setTimeout(10000)
 const pairs = [
-    {
-      home_team: {
-        name: "A",
-        venue_id: 12,
-      },
-      away_team: {
-        name: "B",
-        venue_id: 12,
-      },
+  {
+    home_team: {
+      name: "A",
+      vanue_id: 12,
     },
-    {
-      home_team: {
-        name: "C",
-        venue_id: 12,
-      },
-      away_team: {
-        name: "A",
-        venue_id: 12,
-      },
+    away_team: {
+      name: "B",
+      vanue_id: 12,
     },
-    {
-      home_team: {
-        name: "A",
-        venue_id: 12,
-      },
-      away_team: {
-        name: "D",
-        venue_id: 12,
-      },
+  },
+  {
+    home_team: {
+      name: "C",
+      vanue_id: 12,
     },
-    {
-      home_team: {
-        name: "C",
-        venue_id: 12,
-      },
-      away_team: {
-        name: "B",
-        venue_id: 12,
-      },
+    away_team: {
+      name: "A",
+      vanue_id: 12,
     },
-    {
-      home_team: {
-        name: "B",
-        venue_id: 12,
-      },
-      away_team: {
-        name: "D",
-        venue_id: 12,
-      },
+  },
+  {
+    home_team: {
+      name: "A",
+      vanue_id: 12,
     },
-    {
-      home_team: {
-        name: "D",
-        venue_id: 12,
-      },
-      away_team: {
-        name: "C",
-        venue_id: 12,
-      },
+    away_team: {
+      name: "D",
+      vanue_id: 12,
     },
-  ];
+  },
+  {
+    home_team: {
+      name: "E",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "A",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "A",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "f",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "C",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "B",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "B",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "D",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "E",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "B",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "B",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "f",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "D",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "C",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "C",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "E",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "f",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "C",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "D",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "E",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "f",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "D",
+      vanue_id: 12,
+    },
+  },
+  {
+    home_team: {
+      name: "E",
+      vanue_id: 12,
+    },
+    away_team: {
+      name: "f",
+      vanue_id: 12,
+    },
+  },
+];
 const fixtures = [
-    [
-      {
-        home_team: {
-          name: "A",
-          venue_id: 12,
-        },
-        away_team: {
-          name: "B",
-          venue_id: 12,
-        },
+  [
+    {
+      home_team: {
+        name: "A",
+        vanue_id: 12,
       },
-      {
-        home_team: {
-          name: "D",
-          venue_id: 12,
-        },
-        away_team: {
-          name: "C",
-          venue_id: 12,
-        },
+      away_team: {
+        name: "B",
+        vanue_id: 12,
       },
-    ],
-    [
-      {
-        home_team: {
-          name: "C",
-          venue_id: 12,
-        },
-        away_team: {
-          name: "A",
-          venue_id: 12,
-        },
+    },
+    {
+      home_team: {
+        name: "D",
+        vanue_id: 12,
       },
-      {
-        home_team: {
-          name: "B",
-          venue_id: 12,
-        },
-        away_team: {
-          name: "D",
-          venue_id: 12,
-        },
+      away_team: {
+        name: "C",
+        vanue_id: 12,
       },
-    ],
-    [
-      {
-        home_team: {
-          name: "A",
-          venue_id: 12,
-        },
-        away_team: {
-          name: "D",
-          venue_id: 12,
-        },
+    },
+    {
+      home_team: {
+        name: "E",
+        vanue_id: 12,
       },
-      {
-        home_team: {
-          name: "C",
-          venue_id: 12,
-        },
-        away_team: {
-          name: "B",
-          venue_id: 12,
-        },
+      away_team: {
+        name: "f",
+        vanue_id: 12,
       },
-    ],
-  ];
+    },
+  ],
+  [
+    {
+      home_team: {
+        name: "C",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "A",
+        vanue_id: 12,
+      },
+    },
+    {
+      home_team: {
+        name: "B",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "D",
+        vanue_id: 12,
+      },
+    },
+  ],
+  [
+    {
+      home_team: {
+        name: "A",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "D",
+        vanue_id: 12,
+      },
+    },
+    {
+      home_team: {
+        name: "C",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "B",
+        vanue_id: 12,
+      },
+    },
+  ],
+  [
+    {
+      home_team: {
+        name: "E",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "A",
+        vanue_id: 12,
+      },
+    },
+    {
+      home_team: {
+        name: "B",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "f",
+        vanue_id: 12,
+      },
+    },
+  ],
+  [
+    {
+      home_team: {
+        name: "A",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "f",
+        vanue_id: 12,
+      },
+    },
+    {
+      home_team: {
+        name: "E",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "B",
+        vanue_id: 12,
+      },
+    },
+  ],
+  [
+    {
+      home_team: {
+        name: "C",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "E",
+        vanue_id: 12,
+      },
+    },
+    {
+      home_team: {
+        name: "f",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "D",
+        vanue_id: 12,
+      },
+    },
+  ],
+  [
+    {
+      home_team: {
+        name: "f",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "C",
+        vanue_id: 12,
+      },
+    },
+    {
+      home_team: {
+        name: "D",
+        vanue_id: 12,
+      },
+      away_team: {
+        name: "E",
+        vanue_id: 12,
+      },
+    },
+  ],
+];
 
-test("create reagular policy", () => {
-    league_utils.setPolicy("reagular Season");
-    expect(league_utils.runSchedulingPolicy());
-  });
-  test("create policy", () => {
-    league_utils.setPolicy("policy");
-    expect(league_utils.runSchedulingPolicy());
-  });
   test("create pairs", () => {
-      let f = regularLeaguePolicy.createPairs([{name: "A", "vanue_id": 12},{name: "B", "vanue_id": 12}, {name: "C", "vanue_id": 12}, {name: "D", "vanue_id": 12}]);
-      expect(f.length).toBe(6);
+      let f = regularLeaguePolicy.createPairs([{name: "A", "vanue_id": 12},{name: "B", "vanue_id": 12}, {name: "C", "vanue_id": 12}, {name: "D", "vanue_id": 12}, {name: "E", "vanue_id": 12}, {name: "f", "vanue_id": 12}]);
+      expect(f.length).toBe(15);
   });
   test("fixture devide", () => {
     let f = regularLeaguePolicy.fixture_devide(pairs);
-    expect(f.length).toBe(3);
+    expect(f.length).toBe(7);
   });
-test("add matches by fixtures", async () => {
-    await regularLeaguePolicy.addmatches(fixtures, 271, '2021/2022');
-});
+  test("add matches by fixtures", async () => {
+      await regularLeaguePolicy.addmatches(fixtures, 271, '2021/2022');
+  });
+
+  afterAll(async () => {
+      await DButils.execQuery(
+        `DELETE FROM match WHERE home_team in ('A', 'B', 'C', 'D', 'E', 'F')`
+  );
+    await DButils.pool.close();
+  });
+

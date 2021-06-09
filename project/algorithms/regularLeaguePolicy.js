@@ -2,10 +2,15 @@ const league_utils = require("../routes/utils/league_utils");
 const match_utils = require("../routes/utils/match_utils");
 
 async function genrateLeagueMatches(league_id, season_name){
-    let teams = await league_utils.getTeamsBySeasonID(await league_utils.getSeasonID());
-    let team_pairs = createPairs(teams);
-    let fixture_list = fixture_devide(team_pairs);
-    await addMatches(fixture_list, league_id, season_name);
+    try{
+        let teams = await league_utils.getTeamsBySeasonID(await league_utils.getSeasonID());
+        let team_pairs = createPairs(teams);
+        let fixture_list = fixture_devide(team_pairs);
+        await addmatches(fixture_list, league_id, season_name);
+    }
+    catch(error){
+        throw(error);
+    }
 }
 
 function createPairs(teams) {
@@ -31,13 +36,13 @@ function fixture_devide(pairs) {
         let current_fixture = [];
         fixture_scheduled_team = new Set();
         pairs.forEach(pair => {
-            if (placed_matches.has(pair) || fixture_scheduled_team.has(pair.home_team.name) || fixture_scheduled_team.has(pair.away_team.name)){
+            if (placed_matches.has(pair.home_team.name+pair.away_team.name) || fixture_scheduled_team.has(pair.home_team.name) || fixture_scheduled_team.has(pair.away_team.name)){
                 return;
             }
             current_fixture.push(pair);
             fixture_scheduled_team.add(pair.home_team.name);
             fixture_scheduled_team.add(pair.away_team.name);
-            placed_matches.add(pair);
+            placed_matches.add(pair.home_team.name+pair.away_team.name);
         });
         fixtures.push(current_fixture);
     }
