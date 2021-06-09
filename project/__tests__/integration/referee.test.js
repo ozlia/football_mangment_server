@@ -2,6 +2,7 @@ const DButils = require("../../routes/utils/DButils");
 const referee_utils = require("../../routes/utils/referee_utils");
 const users_utils = require("../../routes/utils/users_utils");
 const guest_utils = require("../../routes/utils/guest_utils");
+const integrationHelper = require("../../routes/integration/integrationHelper");
 
 let tested_ref = {
   username: "tested_ref_username",
@@ -20,49 +21,17 @@ var league_id = "999";
 describe("Referee testing", () => {
   beforeAll(async () => {
     jest.setTimeout(30000);
-    await guest_utils.insertUser(
-      tested_ref.username,
-      tested_ref.firstname,
-      tested_ref.lastname,
-      tested_ref.country,
-      tested_ref.password,
-      tested_ref.email,
-      tested_ref.profile_picture
-    );
-    const user = await DButils.execQuery(
-      `SELECT user_id,username FROM dbo.users WHERE username='${tested_ref.username}'`
-    );
+    const user = await integrationHelper.make_test_referee();
     if (!user) {
-      throw "this shouldnt happen but it did. something wrong with insertUser";
+      throw "this shouldnt happen but it did. something wrong with make_test_referee";
     }
     user_id = user[0].user_id;
     tested_ref.id = user_id;
     user_name = user[0].username;
-    await DButils.execQuery(
-      `INSERT INTO roles (user_id, role_name) VALUES
-                ('${user_id}', 'referee')`
-    );
-    await DButils.execQuery(
-      `INSERT INTO league (league_id, league_name) VALUES
-                ('${league_id}', 'testLeague')`
-    );
-    await DButils.execQuery(
-      `INSERT INTO league_referees (user_id, league_id) VALUES
-                ('${user_id}', '${league_id}')`
-    );
   });
 
   afterAll(async () => {
-    await DButils.execQuery(
-      `DELETE FROM dbo.roles WHERE user_id='${user_id}'`
-    );
-    await DButils.execQuery(
-      `DELETE FROM league_referees WHERE user_id = '${user_id}'`
-    );
-    await DButils.execQuery(
-      `DELETE FROM league WHERE league_id = '${league_id}'`
-    );
-    await DButils.execQuery(`DELETE FROM users WHERE user_id = '${user_id}'`);
+    await integrationHelper.clean_test_referee_data();
     await DButils.pool.close();
   });
 

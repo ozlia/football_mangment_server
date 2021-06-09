@@ -10,11 +10,10 @@ async function verifyTeamsFreeOnMatchDate(home_team_name,away_team_name,date){
     if (number_of_home_team_matches.length > 0 || number_of_away_team_matches.length > 0){
         throw({status:400, message: "invalid match day"});
     }
-
 }
 
 // make sure ref is in league //todo maybe should ask league for all his refree or get ref by his name
-async function verifyRefInLeague(ref_name){
+async function verifyRefInLeague(ref_name,league_id){
     let ref_league = (await referee_utils.getRefLeague(ref_name));
     if (ref_league == 0 || ref_league[0].league_id != league_id){
         throw({status: 404, message: "referee is not in this league"});
@@ -23,8 +22,6 @@ async function verifyRefInLeague(ref_name){
 
 
 async function checkMatchCreationConstraints(home_team_name, away_team_name, ref_name, date) {
-    
-        
         try{
             let league_id = await league_utils.getLeagueId();
             
@@ -32,8 +29,8 @@ async function checkMatchCreationConstraints(home_team_name, away_team_name, ref
             let ht = await league_utils.getTeamByLeague(home_team_name, league_id);
             let at = await league_utils.getTeamByLeague(away_team_name, league_id);
 
-            await verifyTeamsFreeOnMatchDate(home_team_name,away_team_name,date);
-            await verifyRefInLeague(ref_name);
+            await exports.verifyTeamsFreeOnMatchDate(home_team_name,away_team_name,date);
+            await exports.verifyRefInLeague(ref_name,league_id);
     
             
             // check court of home team
@@ -72,3 +69,5 @@ async function addMatch(match) {
 
 exports.checkMatchCreationConstraints = checkMatchCreationConstraints;
 exports.addMatch = addMatch;
+exports.verifyTeamsFreeOnMatchDate = verifyTeamsFreeOnMatchDate;
+exports.verifyRefInLeague = verifyRefInLeague;
