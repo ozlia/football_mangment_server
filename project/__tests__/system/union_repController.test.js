@@ -34,7 +34,7 @@ describe("/user/union_representative", ()=> {
             expect(res.statusCode).toBe(200);
             })
 
-            test("basic assign", async()=> {
+            test("user is already a referee", async()=> {
             const res = await request(app.app).put("/user/union_representative/assign_referee").set('Cookie', `${rep_cookie};`)
             .set('Content-Type', 'application/json').send({username: ref_name });
             expect(res.statusCode).toBe(412);
