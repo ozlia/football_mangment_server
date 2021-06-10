@@ -6,6 +6,12 @@ app.app.use(cookieParser());
 var rep_cookie = "not a real cookie";
 var ref_cookie = "not a real cookie";
 const ref_name = "testing_ref"
+const match = {
+    "home_team_name": "AGF",
+    "away_team_name": "AaB",
+    "date": "2021-09-04T21:52:00",
+    "referee_name": "testing_ref"
+  };
 var ref_id;
 jest.setTimeout(10000);
 
@@ -40,7 +46,7 @@ describe("/user/union_representative", ()=> {
             expect(res.statusCode).toBe(412);
             })
         })
-        describe.skip("/createLeague", () => {
+        describe("/createLeague", () => {
             test("basic  league creation", async()=> {
             const res = await request(app.app).post("/user/union_representative/createLeague").set('Cookie', `${rep_cookie};`)
             .set('Content-Type', 'application/json').send({
@@ -50,21 +56,38 @@ describe("/user/union_representative", ()=> {
             expect(res.statusCode).toBe(200);
             })
 
-            test("league creaton with existing name", async()=> {
+            test("league creaton with existing id", async()=> {
             const res = await request(app.app).post("/user/union_representative/createLeague").set('Cookie', `${rep_cookie};`)
             .set('Content-Type', 'application/json').send({
-                "league_id": 303,
-                "league_name": "winner"
+                "league_id": 100,
+                "league_name": "fail test"
               });
             expect(res.statusCode).toBe(400);
             })
         })
 
+        describe("/match", () => {
+            test("refree not in league match creation", async()=> {
+            const res = await request(app.app).post("/user/union_representative/match").set('Cookie', `${rep_cookie};`)
+            .set('Content-Type', 'application/json').send(match);
+            expect(res.statusCode).toBe(404);
+            })
+        })
+
+        describe("/assign reg to superleague", () => {
+            test("basic referee league assign", async()=> {
+            const res = await request(app.app).put("/user/union_representative/assign_referee_league").set('Cookie', `${rep_cookie};`)
+            .set('Content-Type', 'application/json').send({username: ref_name });
+            expect(res.statusCode).toBe(200);
+            })
+        })
+
     afterAll(async () => {
+    await DButils.execQuery(`DELETE FROM league_referees WHERE user_id = '${ref_id}'`);    
     await DButils.execQuery(`DELETE FROM roles WHERE user_id = '${ref_id}'`);
     await DButils.execQuery(`DELETE FROM users WHERE username = '${ref_name}'`);
-    await DButils.execQuery(`DELETE FROM league WHERE league_id = '303'`);
     await DButils.execQuery(`DELETE FROM league WHERE league_id = '100'`);
+    await DButils.execQuery(`DELETE FROM match WHERE home_team = 'AGF' AND away_team = 'AaB'`);
     await DButils.pool.close();
     app.server.close();
     });
