@@ -3,10 +3,7 @@ const users_utils = require("../../routes/utils/users_utils");
 var user_id;
 var username;
 var match_id1;
-var match_id2;
-
-
-    
+var match_id2;    
 
 describe("testing Authenticaion", () => {
     beforeEach(async () => {
