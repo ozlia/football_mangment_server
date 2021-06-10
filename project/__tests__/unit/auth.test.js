@@ -1,5 +1,4 @@
 const guest_utils = require("../../routes/utils/guest_utils");
-jest.setTimeout(10000);
 const tested_user = {
   username: "Naor",
   firstname: "Naor",
