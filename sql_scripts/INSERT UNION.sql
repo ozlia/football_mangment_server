@@ -1,0 +1,1 @@
+INSERT INTO roles VALUES ((SELECT user_id FROM users WHERE username = 'Dani_Uni'), 'union_rep');
