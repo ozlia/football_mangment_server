@@ -2,7 +2,7 @@ const DButils = require("../../routes/utils/DButils");
 const referee_utils = require("../../routes/utils/referee_utils");
 const users_utils = require("../../routes/utils/users_utils");
 const guest_utils = require("../../routes/utils/guest_utils");
-const integrationHelper = require("../../routes/integration/integrationHelper");
+const integrationHelper = require('../../integrationHelper');
 
 let tested_ref = {
   username: "tested_ref_username",
@@ -16,7 +16,7 @@ let tested_ref = {
 
 var user_id;
 var user_name;
-var league_id = "999";
+var league_id = "271";
 
 describe("Referee testing", () => {
   beforeAll(async () => {

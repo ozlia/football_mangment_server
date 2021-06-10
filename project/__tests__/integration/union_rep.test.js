@@ -2,7 +2,7 @@ const DButils = require('../../routes/utils/DButils');
 const league_utils = require('../../routes/utils/league_utils');
 const union_rep_utils = require('../../routes/utils/union_rep_utils');
 const guest_utils = require('../../routes/utils/guest_utils');
-const integrationHelper = require('./integrationHelper');
+const integrationHelper = require('../../integrationHelper');
 
 let spies = {};
 

@@ -1,5 +1,5 @@
-const DButils = require('../../routes/utils/DButils');
-const guest_utils = require('../../routes/utils/guest_utils');
+const DButils = require('./routes/utils/DButils');
+const guest_utils = require('./routes/utils/guest_utils');
 
 let tested_ref = {
     username: "ref",
@@ -12,7 +12,7 @@ let tested_ref = {
   };
   var league_id = "271";
 
-async function make_test_referee(){
+async function make_test_referee(refereeInLeague=true){
     await guest_utils.insertUser(
         tested_ref.username,
         tested_ref.firstname,
@@ -35,10 +35,12 @@ async function make_test_referee(){
       //   `INSERT INTO league (league_id, league_name) VALUES
       //             ('${league_id}', 'testLeague')`
       // );
-      await DButils.execQuery(
-        `INSERT INTO league_referees (user_id, league_id) VALUES
-                  ('${tested_ref.id}', '${league_id}')`
-      );
+      if(refereeInLeague){
+        await DButils.execQuery(
+          `INSERT INTO league_referees (user_id, league_id) VALUES
+                    ('${tested_ref.id}', '${league_id}')`
+        );
+      }
       return user;
 }
 
