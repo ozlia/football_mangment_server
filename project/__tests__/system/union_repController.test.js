@@ -90,7 +90,29 @@ describe("/user/union_representative", ()=> {
             })
         })
 
+
+        
+        describe("/policy creation", () => {
+            test("run scheduling without policy", async()=> {
+                const res = await request(app.app).put("/user/union_representative/run_scheduling_policy").set('Cookie', `${rep_cookie};`)
+                .set('Content-Type', 'application/json').send({
+                    "league_id": 271
+                  });
+                expect(res.statusCode).toBe(404);
+            })
+
+            test("basic policy creation", async()=> {
+                const res = await request(app.app).put("/user/union_representative/assign_policy").set('Cookie', `${rep_cookie};`)
+                .set('Content-Type', 'application/json').send({
+                    "league_id": 271,
+                    "policy": "reagular Season"
+                });
+                expect(res.statusCode).toBe(200);
+            })
+        })
+
     afterAll(async () => {
+    await DButils.execQuery(`DELETE FROM scheduling_policy WHERE league_id = '271'`);    
     await DButils.execQuery(`DELETE FROM league_referees WHERE user_id = '${ref_id}'`);    
     await DButils.execQuery(`DELETE FROM roles WHERE user_id = '${ref_id}'`);
     await DButils.execQuery(`DELETE FROM users WHERE username = '${ref_name}'`);
