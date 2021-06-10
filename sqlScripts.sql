@@ -1,1 +1,1 @@
-DELETE from league_referees where user_id in (38, 897);
+DELETE from scheduling_policy where league_id in (303);

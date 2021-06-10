@@ -66,7 +66,7 @@ describe("/user/union_representative", ()=> {
     await DButils.execQuery(`DELETE FROM league WHERE league_id = '303'`);
     await DButils.execQuery(`DELETE FROM league WHERE league_id = '100'`);
     await DButils.pool.close();
-    app.app.server.close();
+    app.server.close();
     });
 })
 

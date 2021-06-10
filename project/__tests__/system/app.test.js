@@ -23,6 +23,6 @@ describe("GET /alive", ()=> {
 afterAll(async () => {
     await DButils.execQuery(`DELETE FROM users WHERE username = 'KingMessi'`);
     await DButils.pool.close();
-    app.app.server.close();
+    app.server.close();
   });
   
