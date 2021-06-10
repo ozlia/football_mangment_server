@@ -1,1 +1,1 @@
-DELETE from roles where user_id = (select user_id from users where username = 'testU')
+DELETE from league_referees where user_id in (38, 897);
