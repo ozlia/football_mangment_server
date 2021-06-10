@@ -75,6 +75,26 @@ describe('testing checkMatchCreationConstraints ', () => {
     expect(matchThatWithstandsConstraints).toBeDefined();
   });
 
+
+  test('getTeamByLeague stubbed only ', async () => {
+    spies.verifyTeamsFreeOnMatchDateSpy.mockRestore(); 
+    spies.verifyRefInLeagueSpy.mockRestore(); 
+    
+    const matchThatWithstandsConstraints =
+      await union_rep_utils.checkMatchCreationConstraints(
+        tested_match.home_team,
+        tested_match.away_team,
+        tested_match.referee_name,
+        tested_match.date
+      );
+      expect(spies.getTeamByLeagueSpy).toHaveBeenCalled();
+      expect(spies.verifyTeamsFreeOnMatchDateSpy).not.toHaveBeenCalled();
+      expect(spies.verifyRefInLeagueSpy).not.toHaveBeenCalled();
+      expect(matchThatWithstandsConstraints).toBeDefined();
+  });
+
+
+
   test('checkMatchCreationConstraints - getTeamByLeague and verifyTeamsFreeOnMatchDate stubbed', async () => {
     spies.verifyRefInLeagueSpy.mockRestore();
 
@@ -92,37 +112,6 @@ describe('testing checkMatchCreationConstraints ', () => {
     expect(matchThatWithstandsConstraints).toBeDefined();
   });
 
-  test('checkMatchCreationConstraints - getTeamByLeague and verifyRefInLeague stubbed', async () => {
-    spies.verifyTeamsFreeOnMatchDateSpy.mockRestore(); 
-    
-    const matchThatWithstandsConstraints =
-      await union_rep_utils.checkMatchCreationConstraints(
-        tested_match.home_team,
-        tested_match.away_team,
-        tested_match.referee_name,
-        tested_match.date
-      );
-    expect(spies.getTeamByLeagueSpy).toHaveBeenCalled();
-    expect(spies.verifyTeamsFreeOnMatchDateSpy).not.toHaveBeenCalled();
-    expect(spies.verifyRefInLeagueSpy).toHaveBeenCalled();
-    expect(matchThatWithstandsConstraints).toBeDefined();
-  });
-
-  test('checkMatchCreationConstraints - verifyRefInLeague and verifyTeamsFreeOnMatchDate stubbed', async () => {
-    spies.getTeamByLeagueSpy.mockRestore(); 
-    
-    const matchThatWithstandsConstraints =
-      await union_rep_utils.checkMatchCreationConstraints(
-        tested_match.home_team,
-        tested_match.away_team,
-        tested_match.referee_name,
-        tested_match.date
-      );
-      expect(spies.getTeamByLeagueSpy).not.toHaveBeenCalled();
-      expect(spies.verifyTeamsFreeOnMatchDateSpy).toHaveBeenCalled();
-      expect(spies.verifyRefInLeagueSpy).toHaveBeenCalled();
-    expect(matchThatWithstandsConstraints).toBeDefined();
-  });
 
   test('checkMatchCreationConstraints - no stubs', async () => {
     spies.getTeamByLeagueSpy.mockRestore(); 
@@ -141,4 +130,83 @@ describe('testing checkMatchCreationConstraints ', () => {
       expect(spies.verifyRefInLeagueSpy).not.toHaveBeenCalled();
       expect(matchThatWithstandsConstraints).toBeDefined();
   });
+
+  test.skip('checkMatchCreationConstraints - getTeamByLeague and verifyRefInLeague stubbed', async () => {
+    spies.verifyTeamsFreeOnMatchDateSpy.mockRestore(); 
+    
+    const matchThatWithstandsConstraints =
+      await union_rep_utils.checkMatchCreationConstraints(
+        tested_match.home_team,
+        tested_match.away_team,
+        tested_match.referee_name,
+        tested_match.date
+      );
+    expect(spies.getTeamByLeagueSpy).toHaveBeenCalled();
+    expect(spies.verifyTeamsFreeOnMatchDateSpy).not.toHaveBeenCalled();
+    expect(spies.verifyRefInLeagueSpy).toHaveBeenCalled();
+    expect(matchThatWithstandsConstraints).toBeDefined();
+  });
+
+  test.skip('checkMatchCreationConstraints - verifyRefInLeague and verifyTeamsFreeOnMatchDate stubbed', async () => {
+    spies.getTeamByLeagueSpy.mockRestore(); 
+    
+    const matchThatWithstandsConstraints =
+      await union_rep_utils.checkMatchCreationConstraints(
+        tested_match.home_team,
+        tested_match.away_team,
+        tested_match.referee_name,
+        tested_match.date
+      );
+      expect(spies.getTeamByLeagueSpy).not.toHaveBeenCalled();
+      expect(spies.verifyTeamsFreeOnMatchDateSpy).toHaveBeenCalled();
+      expect(spies.verifyRefInLeagueSpy).toHaveBeenCalled();
+    expect(matchThatWithstandsConstraints).toBeDefined();
+  });
+
+
+
+
+
+  test.skip('verifyTeamsFreeOnMatchDateSpy stubbed only', async () => {
+    spies.getTeamByLeagueSpy.mockRestore(); 
+    // spies.verifyTeamsFreeOnMatchDateSpy.mockRestore(); 
+    spies.verifyRefInLeagueSpy.mockRestore(); 
+    
+    const matchThatWithstandsConstraints =
+      await union_rep_utils.checkMatchCreationConstraints(
+        tested_match.home_team,
+        tested_match.away_team,
+        tested_match.referee_name,
+        tested_match.date
+      );
+      expect(spies.getTeamByLeagueSpy).not.toHaveBeenCalled();
+      expect(spies.verifyTeamsFreeOnMatchDateSpy).toHaveBeenCalled();
+      expect(spies.verifyRefInLeagueSpy).not.toHaveBeenCalled();
+      expect(matchThatWithstandsConstraints).toBeDefined();
+  });
+
+  test.skip('verifyRefInLeagueSpy stubbed only', async () => {
+    spies.getTeamByLeagueSpy.mockRestore(); 
+    spies.verifyTeamsFreeOnMatchDateSpy.mockRestore(); 
+    // spies.verifyRefInLeagueSpy.mockRestore(); 
+    
+    const matchThatWithstandsConstraints =
+      await union_rep_utils.checkMatchCreationConstraints(
+        tested_match.home_team,
+        tested_match.away_team,
+        tested_match.referee_name,
+        tested_match.date
+      );
+      expect(spies.getTeamByLeagueSpy).not.toHaveBeenCalled();
+      expect(spies.verifyTeamsFreeOnMatchDateSpy).not.toHaveBeenCalled();
+      expect(spies.verifyRefInLeagueSpy).toHaveBeenCalled();
+      expect(matchThatWithstandsConstraints).toBeDefined();
+  });
+
+
+
+
+
+
+
 });

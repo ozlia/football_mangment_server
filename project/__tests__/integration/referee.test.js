@@ -18,6 +18,10 @@ var user_id;
 var user_name;
 var league_id = "271";
 
+beforeEach(async () => {
+  jest.setTimeout(10000);
+});
+
 describe("Referee testing", () => {
   beforeAll(async () => {
     jest.setTimeout(30000);
