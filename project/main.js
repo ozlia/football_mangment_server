@@ -93,3 +93,4 @@ const server = app.listen(port, () => {
 });
 
 exports.app = app;
+exports.server = server;
