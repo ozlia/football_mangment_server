@@ -1,6 +1,8 @@
 const DButils = require("../../routes/utils/DButils");
 const regularLeaguePolicy = require("../../algorithms/regularLeaguePolicy");
-jest.setTimeout(10000)
+beforeEach(async () => {
+  jest.setTimeout(10000);
+});
 const pairs = [
   {
     home_team: {

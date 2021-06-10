@@ -32,6 +32,9 @@ describe("testing Authenticaion", () => {
       await DButils.pool.close();
     });
   
+    beforeEach(async () => {
+      jest.setTimeout(10000);
+    });
     test("Add Event to match", async () => {
         try {
 

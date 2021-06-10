@@ -16,6 +16,10 @@ const DButils = require("../../routes/utils/DButils");
 const users_utils = require("../../routes/utils/users_utils");
 
 describe("testing Authenticaion", () => {
+  
+  beforeEach(async () => {
+    jest.setTimeout(10000);
+  });
   afterAll(async () => {
     await DButils.pool.close();
   });
