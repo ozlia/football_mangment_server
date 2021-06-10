@@ -60,6 +60,6 @@ describe("/auth", ()=> {
 afterAll(async () => {
   await DButils.execQuery(`DELETE FROM users WHERE username = 'KingMessi'`);
   await DButils.pool.close();
-  app.server.close();
+  app.app.server.close();
 });
 

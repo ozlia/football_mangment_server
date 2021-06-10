@@ -18,7 +18,7 @@ describe("/user/union_representative", ()=> {
         await getURepCookie();
     });
 
-        describe.skip("/unauthorized accses", () => {
+        describe("/unauthorized accses", () => {
             test("send rep no cookie ", async()=> {
             const res = await request(app.app).put("/user/union_representative/assign_referee")
             .set('Cookie', `not a real cookie;`)
@@ -27,7 +27,7 @@ describe("/user/union_representative", ()=> {
             })
         })
 
-        describe.skip("/assign_referee", () => {
+        describe("/assign_referee", () => {
             test("basic assign", async()=> {
             const res = await request(app.app).put("/user/union_representative/assign_referee").set('Cookie', `${rep_cookie};`)
             .set('Content-Type', 'application/json').send({username: ref_name });
