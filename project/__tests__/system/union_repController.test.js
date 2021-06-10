@@ -66,7 +66,7 @@ describe("/user/union_representative", ()=> {
             })
         })
 
-        describe("/match", () => {
+        describe("/match fail", () => {
             test("refree not in league match creation", async()=> {
             const res = await request(app.app).post("/user/union_representative/match").set('Cookie', `${rep_cookie};`)
             .set('Content-Type', 'application/json').send(match);
@@ -79,6 +79,14 @@ describe("/user/union_representative", ()=> {
             const res = await request(app.app).put("/user/union_representative/assign_referee_league").set('Cookie', `${rep_cookie};`)
             .set('Content-Type', 'application/json').send({username: ref_name });
             expect(res.statusCode).toBe(200);
+            })
+        })
+
+        describe("/create match pass", () => {
+            test("basic match creation", async()=> {
+            const res = await request(app.app).post("/user/union_representative/match").set('Cookie', `${rep_cookie};`)
+            .set('Content-Type', 'application/json').send(match);
+            expect(res.statusCode).toBe(201);
             })
         })
 
