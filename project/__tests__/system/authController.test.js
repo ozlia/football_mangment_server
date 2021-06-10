@@ -13,7 +13,6 @@ const reg_user = {
   };
 app.app.use(cookieParser());
 var user_cookie1 = "";
-var user_cookie2 = "";
 
 
 describe("/auth", ()=> {
@@ -30,10 +29,7 @@ describe("/auth", ()=> {
     })
     describe("/login", () => {
         test("basic login", async()=> {
-        const res = await request(app.app).post("/auth/login", function(req, res){
-            console.log(req);
-            console.log(res);
-        }).send({username : reg_user.username, password: reg_user.password});
+        const res = await request(app.app).post("/auth/login").send({username : reg_user.username, password: reg_user.password});
         user_cookie1 = res.header['set-cookie'][0];
         // user_cookie2 = res.cookies;
         expect(res.statusCode).toBe(200);
