@@ -1,1 +1,0 @@
-DELETE from match where (match_id = 10 OR match_id = 11);
